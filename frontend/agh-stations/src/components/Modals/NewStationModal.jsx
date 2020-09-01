@@ -19,7 +19,7 @@ class NewStationModal extends Component {
     let title = "Edytuj stacje";
     let button = <Button onClick={this.toggle}>Edit</Button>;
     if (create) {
-      title = "Creating New Station";
+      title = "Dodaj nową stację";
 
       button = (
         <Button

@@ -4,7 +4,7 @@ import NewStationModal from "./Modals/NewStationModal";
 
 import RemovalModal from "./Modals/RemovalModal";
 
-class StudentList extends Component {
+class StationList extends Component {
   render() {
     const stations = this.props.stations;
     return (
@@ -47,4 +47,4 @@ class StudentList extends Component {
   }
 }
 
-export default StudentList;
+export default StationList;

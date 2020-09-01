@@ -3,7 +3,7 @@ import {Button, Form, FormGroup, Input, Label} from "reactstrap";
 
 import axios from "axios";
 
-import {API_URL} from "../constants";
+import {API_URL, STATIONS_API} from "../constants";
 
 class NewStationForm extends React.Component {
     state = {
@@ -24,7 +24,7 @@ class NewStationForm extends React.Component {
 
     createStation = e => {
         e.preventDefault();
-        axios.post(API_URL, this.state).then(() => {
+        axios.post(API_URL + STATIONS_API, this.state).then(() => {
             this.props.resetState();
             this.props.toggle();
         });
@@ -32,7 +32,7 @@ class NewStationForm extends React.Component {
 
     editStation = e => {
         e.preventDefault();
-        axios.get(API_URL + "?search=" + this.state.name.split(" ").join("+"))
+        axios.get(API_URL + STATIONS_API + "?search=" + this.state.name.split(" ").join("+"))
             .then(res => this.setState({url: res.data[0]['url']}))
             .then(() => {
                 return axios.put(this.state.url, this.state)

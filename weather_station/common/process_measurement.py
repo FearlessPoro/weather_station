@@ -1,7 +1,7 @@
 import json
 
 from weather_station.common.constants import Constants
-from weather_station.models import *
+from weather_station.api.models import *
 
 
 class ProcessMeasurement:

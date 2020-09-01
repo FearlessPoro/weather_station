@@ -19,7 +19,8 @@ from rest_framework import routers
 from django.contrib import admin
 
 
-from weather_station.view import UserViewSet, StationViewSet, MeasurementTypeViewSet, StationMeasurementTypeViewSet
+from weather_station.api.views import UserViewSet, StationViewSet, MeasurementTypeViewSet, StationMeasurementTypeViewSet, \
+    LoginView
 
 router = routers.SimpleRouter()
 router.register('users', UserViewSet)
@@ -30,7 +31,7 @@ router.register('stationMeasurementType', StationMeasurementTypeViewSet)
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),

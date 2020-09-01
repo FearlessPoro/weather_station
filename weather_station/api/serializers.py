@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from weather_station.models import Station, MeasurementType, StationMeasurementType
+from weather_station.api.models import Station, MeasurementType, StationMeasurementType
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
