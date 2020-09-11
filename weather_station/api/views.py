@@ -1,29 +1,44 @@
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from pytz import unicode
-from rest_framework import filters
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from weather_station.api.models import Station, MeasurementType, StationMeasurementType, MeasurementView
+from weather_station.api.permissions import IsAdminUserOrReadOnly
+from weather_station.api.serializers import StationSerializer, UserSerializer, MeasurementTypeSerializer, \
+    StationMeasurementTypeSerializer, MeasurementSerializer
 from weather_station.common.constants import Constants
 from weather_station.common.process_measurement import ProcessMeasurement
-from weather_station.api.models import Station, MeasurementType, StationMeasurementType
-from weather_station.api.serializers import StationSerializer, UserSerializer, MeasurementTypeSerializer, \
-    StationMeasurementTypeSerializer
 
 
 class StationViewSet(ModelViewSet):
-    search_fields = ['name']
-    filter_backends = (filters.SearchFilter,)
+    permission_classes = [IsAdminUserOrReadOnly]
+
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['name']
+
+    # pagination_class = PageNumberPagination
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
 
+class MeasurementViewSet(ModelViewSet):
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['station']
+    queryset = MeasurementView.objects.all()
+    serializer_class = MeasurementSerializer
+
+
 class UserViewSet(ModelViewSet):
+    permission_classes = [IsAdminUserOrReadOnly]
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -32,26 +47,25 @@ class MeasurementTypeViewSet(ModelViewSet):
     queryset = MeasurementType.objects.all()
     serializer_class = MeasurementTypeSerializer
 
+    # @detail_route(methods=['post'])
+    # def newMeasurement(self, request, **kwargs):
+    #
+
 
 class StationMeasurementTypeViewSet(ModelViewSet):
     queryset = StationMeasurementType.objects.all()
     serializer_class = StationMeasurementTypeSerializer
 
 
-class LoginView(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        content = {
-            'user': unicode(request.user),  # `django.contrib.auth.User` instance.
-            'auth': unicode(request.auth),  # None
-        }
-        return Response(content)
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'key': token.key, 'username': token.user.username, 'is_admin': token.user.is_superuser})
 
 
 class SendView(APIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     @csrf_exempt

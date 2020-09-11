@@ -1,5 +1,7 @@
 import * as actionConstants from './actionConstants'
-import {AxiosInstance as axios} from "axios";
+import axios from "axios"
+import {AUTHENTICATE_URL, LOGIN_URL, REGISTRATION_URL} from "../../constants";
+
 
 export const authStart = () => {
     return {
@@ -24,6 +26,8 @@ export const authFail = error => {
 export const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('expirationDate');
+    localStorage.removeItem("is_admin")
+    localStorage.removeItem("username")
     return {
         type: actionConstants.AUTH_LOGOUT
     }
@@ -40,7 +44,7 @@ export const checkAuthTimeout = expirationTime => {
 export const authLogin = (username, password) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post("http://localhost:8000/api-auth/login/", {
+        axios.post(AUTHENTICATE_URL,  {
             username: username,
             password: password
         })
@@ -49,6 +53,8 @@ export const authLogin = (username, password) => {
                 const expirationDate = new Date(new Date().getTime() + 3600000);
                 localStorage.setItem('token', token);
                 localStorage.setItem('expirationDate', expirationDate);
+                localStorage.setItem("username", username)
+                localStorage.setItem("is_admin", res.data.is_admin)
                 dispatch(authSuccess(token));
                 dispatch(checkAuthTimeout(3600));
             })
@@ -62,7 +68,7 @@ export const authLogin = (username, password) => {
 export const authSignup = (username, email,  password, passwordRepeat) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post("http://localhost:8000/api-auth/registration/", {
+        axios.post(REGISTRATION_URL, {
             username: username,
             email: email,
             password1: password,
@@ -73,6 +79,8 @@ export const authSignup = (username, email,  password, passwordRepeat) => {
                 const expirationDate = new Date(new Date().getTime() + 3600000);
                 localStorage.setItem('token', token);
                 localStorage.setItem('expirationDate', expirationDate);
+                localStorage.setItem('username', res.data.username)
+                localStorage.setItem("is_admin", res.data.isStaff)
                 dispatch(authSuccess(token));
                 dispatch(checkAuthTimeout(3600));
             })
@@ -80,5 +88,22 @@ export const authSignup = (username, email,  password, passwordRepeat) => {
                 dispatch(authFail(error))
             })
         ;
+    }
+}
+
+export const authCheckState = () => {
+    return dispatch => {
+        const token = localStorage.getItem('token');
+        if (token === undefined) {
+            dispatch(logout());
+        } else {
+            const expirationDate = new Date(localStorage.getItem('expirationDate'))
+            if (expirationDate <= new Date()) {
+                dispatch(logout());
+            } else {
+                dispatch(authSuccess(token))
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000))
+            }
+        }
     }
 }

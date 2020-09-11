@@ -3,12 +3,13 @@ import {Button, Form, FormGroup, Input, Label} from "reactstrap";
 
 import axios from "axios";
 
-import {API_URL, STATIONS_API} from "../constants";
+import {STATIONS_API} from "../../constants";
 
 class NewStationForm extends React.Component {
     state = {
         name: "",
         address: "",
+        newName: ""
     };
 
     componentDidMount() {
@@ -22,9 +23,11 @@ class NewStationForm extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
+
+    //TODO CHECK IF STATION EXISTS AND RETURN ERROR
     createStation = e => {
         e.preventDefault();
-        axios.post(API_URL + STATIONS_API, this.state).then(() => {
+        axios.post(STATIONS_API, this.state).then(() => {
             this.props.resetState();
             this.props.toggle();
         });
@@ -32,7 +35,7 @@ class NewStationForm extends React.Component {
 
     editStation = e => {
         e.preventDefault();
-        axios.get(API_URL + STATIONS_API + "?search=" + this.state.name.split(" ").join("+"))
+        axios.get(STATIONS_API + "?search=" + this.state.name.split(" ").join("+"))
             .then(res => this.setState({url: res.data[0]['url']}))
             .then(() => {
                 return axios.put(this.state.url, this.state)

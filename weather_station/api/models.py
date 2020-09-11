@@ -95,10 +95,10 @@ class MeasurementView(models.Model):
     pressure_unit = models.CharField(max_length=20, db_column='pressure unit')
     humidity = models.FloatField()
     humidity_unit = models.CharField(max_length=20, db_column='humidity unit')
-    PM2_5 = models.FloatField(db_column='PM 2.5')
-    PM2_5_unit = models.CharField(max_length=20, db_column='PM 2.5 unit')
+    PM_2_5 = models.FloatField(db_column='PM 2.5')
+    PM_2_5_unit = models.CharField(max_length=20, db_column='PM 2.5 unit')
     PM_10 = models.FloatField(db_column='PM 10')
-    PM10_unit = models.CharField(max_length=20, db_column='PM 10 unit')
+    PM_10_unit = models.CharField(max_length=20, db_column='PM 10 unit')
 
     class Meta:
         db_table = "all_measurements"

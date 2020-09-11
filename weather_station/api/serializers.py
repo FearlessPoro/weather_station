@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from weather_station.api.models import Station, MeasurementType, StationMeasurementType
+from weather_station.api.models import Station, MeasurementType, StationMeasurementType, MeasurementView
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,15 +12,20 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class StationSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = Station
         fields = '__all__'
 
 
-# class MeasurementSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = MeasurementView
-#         fields = '__all__'
+class MeasurementSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+
+    class Meta:
+        model = MeasurementView
+        fields = '__all__'
+
 
 class MeasurementTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -32,5 +37,3 @@ class StationMeasurementTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StationMeasurementType
         fields = '__all__'
-
-

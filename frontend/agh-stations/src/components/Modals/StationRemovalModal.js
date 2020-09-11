@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
-import {Modal, ModalHeader, Button, ModalFooter} from "reactstrap";
+import {Button, Modal, ModalFooter, ModalHeader} from "reactstrap";
 
 import axios from "axios";
 
-import {API_URL, STATIONS_API} from "../../constants";
+import {STATIONS_API} from "../../constants";
 
 class ConfirmRemovalModal extends Component {
     state = {
@@ -18,7 +18,7 @@ class ConfirmRemovalModal extends Component {
     };
 
     deleteServer = name => {
-        axios.get(API_URL + STATIONS_API + "?search=" + name.split(" ").join("+"))
+        axios.get(STATIONS_API + "?name=" + name.split(" ").join("+"))
             .then(res => this.setState({url: res.data[0]['url']}))
             .then(() => axios.delete(this.state.url)
             ).then(() => {

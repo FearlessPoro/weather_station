@@ -1,32 +1,52 @@
 import React from "react";
-import {Breadcrumb, Layout, Menu} from 'antd';
+import {Layout, Menu} from 'antd';
+import {Link, withRouter} from "react-router-dom";
+import * as actions from "../store/actions/auth";
+import {connect} from "react-redux";
+import HomeOutlined from "@ant-design/icons/lib/icons/HomeOutlined";
 
 const {Header, Content, Footer} = Layout;
 
 const BasicLayout = (props) => {
+
     return (
-        <Layout className="layout">
-            <Header>
+        <Layout className="layout" >
+            <Header style={{marginBottom: '50px'}}>
                 <div className="logo"/>
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                    <Menu.Item key="1">nav 1</Menu.Item>
-                    <Menu.Item key="2">nav 2</Menu.Item>
-                    <Menu.Item key="3">nav 3</Menu.Item>
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['/']}>
+                    <Menu.Item key="/"><Link to='/'><HomeOutlined style={{marginLeft: "10px"}}/></Link></Menu.Item>
+                    <Menu.Item key="/stations/"><Link to='/stations/'>Stacje</Link></Menu.Item>
+                    {
+                        props.isAuthenticated ?
+                                <Menu.Item key="logout" onClick={props.logout} style={{float: 'right'}}>
+                                    Wyloguj się
+                                </Menu.Item>
+                            :
+
+                            <Menu.Item key="/login" style={{float: 'right'}}>
+                                <Link to='/login/'>
+                                    Logowanie
+                                </Link>
+                            </Menu.Item>
+                    }
+                    {/*<Menu.Item key="3">nav 3</Menu.Item>*/}
                 </Menu>
-            </Header>
+            </Header >
             <Content style={{padding: '0 50px'}}>
-                <Breadcrumb style={{margin: '16px 0'}}>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
                 <div className="site-layout-content">
                     {props.children}
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+            <Footer style={{textAlign: 'center'}}>Stacje pomiarowe AGH ©2020</Footer>
         </Layout>
     );
 }
 
-export default BasicLayout
+
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(actions.logout())
+    }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(BasicLayout))

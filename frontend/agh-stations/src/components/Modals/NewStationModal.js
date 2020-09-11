@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
-import NewStationForm from "../NewStationForm";
+import NewStationForm from "./NewStationForm";
 
 class NewStationModal extends Component {
   state = {
@@ -17,7 +17,7 @@ class NewStationModal extends Component {
     const create = this.props.create;
 
     let title = "Edytuj stacje";
-    let button = <Button onClick={this.toggle}>Edit</Button>;
+    let button = <Button onClick={this.toggle}>Edytuj</Button>;
     if (create) {
       title = "Dodaj nową stację";
 
@@ -28,7 +28,7 @@ class NewStationModal extends Component {
           onClick={this.toggle}
           style={{ minWidth: "200px" }}
         >
-          Create New
+          Dodaj stację
         </Button>
       );
     }
