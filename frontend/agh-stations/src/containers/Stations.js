@@ -4,19 +4,45 @@ import NewStationsModal from "../components/Modals/NewStationModal";
 import axios from "axios";
 import {STATIONS_API} from "../constants";
 import StationList from "../components/StationList";
+import {Pagination} from "antd";
 
 
 class Stations extends Component {
     state = {
-        stations: []
+        allStations: [],
+        offset: 0,
+        currentStations: [],
+        pageSize: 5,
+        pageCount: 1,
+        page: 1
+    }
+
+    handlePageClick = (pageNo) => {
+        const selectedPage = pageNo - 1;
+        const offset = selectedPage * this.state.pageSize;
+        this.setState({page: selectedPage, offset: offset},
+            () => {
+                this.setElementsForCurrentPage();
+            });
     }
 
     componentDidMount() {
         this.resetState();
     }
 
+    setElementsForCurrentPage() {
+        let currentStations = this.state.allStations.slice(this.state.offset, this.state.offset + this.state.pageSize);
+        this.setState({
+            currentStations: currentStations
+        });
+    }
+
     getStations = () => {
-        axios.get(STATIONS_API).then(res => this.setState({stations: res.data}));
+        axios.get(`${STATIONS_API}`).then(res => this.setState(
+            {
+                allStations: res.data,
+                pageCount: Math.ceil(res.data.length / this.state.pageSize)
+            })).then(() => this.setElementsForCurrentPage());
     };
 
     resetState = () => {
@@ -39,14 +65,33 @@ class Stations extends Component {
                     <Col>
                         <StationList
                             {...this.props}
-                            stations={this.state.stations}
+                            stations={this.state.currentStations}
                             resetState={this.resetState}
                         />
                     </Col>
                 </Row>
+                {
 
+                    this.state.pageCount > 1 ?
+                        <Row>
+                            <Col>
+                                <Pagination
+                                    defaultCurrent={1}
+                                    onChange={this.handlePageClick}
+                                    size="small"
+                                    total={this.state.allStations.length}
+                                    // showTotal={(total, range) =>
+                                    //     `${range[0]}-${range[1]} of ${total} items`}
+                                    pageSize={this.state.pageSize}
+                                />
+                            </Col>
+                        </Row>
+                        : null
+
+                }
             </Container>
         )
+
     }
 }
 

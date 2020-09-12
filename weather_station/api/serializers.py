@@ -17,6 +17,7 @@ class StationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Station
         fields = '__all__'
+        ordering = ['id']
 
 
 class MeasurementSerializer(serializers.HyperlinkedModelSerializer):

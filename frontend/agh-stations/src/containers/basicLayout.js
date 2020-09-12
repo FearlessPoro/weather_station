@@ -9,8 +9,9 @@ const {Header, Content, Footer} = Layout;
 
 const BasicLayout = (props) => {
 
+    let helloString = `Witaj, ${localStorage.getItem("username")}`
     return (
-        <Layout className="layout" >
+        <Layout className="layout">
             <Header style={{marginBottom: '50px'}}>
                 <div className="logo"/>
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['/']}>
@@ -18,9 +19,9 @@ const BasicLayout = (props) => {
                     <Menu.Item key="/stations/"><Link to='/stations/'>Stacje</Link></Menu.Item>
                     {
                         props.isAuthenticated ?
-                                <Menu.Item key="logout" onClick={props.logout} style={{float: 'right'}}>
-                                    Wyloguj się
-                                </Menu.Item>
+                            <Menu.Item key="logout" onClick={props.logout} style={{float: 'right'}}>
+                                Wyloguj się
+                            </Menu.Item>
                             :
 
                             <Menu.Item key="/login" style={{float: 'right'}}>
@@ -29,9 +30,17 @@ const BasicLayout = (props) => {
                                 </Link>
                             </Menu.Item>
                     }
-                    {/*<Menu.Item key="3">nav 3</Menu.Item>*/}
+
                 </Menu>
-            </Header >
+                {
+                    props.isAuthenticated ?
+                        <p style={{float: 'right'}}>
+                            Witaj, {localStorage.getItem("username")}
+                        </p>
+                        :
+                        null
+                }
+            </Header>
             <Content style={{padding: '0 50px'}}>
                 <div className="site-layout-content">
                     {props.children}

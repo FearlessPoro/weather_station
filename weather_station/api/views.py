@@ -4,7 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -24,7 +23,6 @@ class StationViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['name']
 
-    # pagination_class = PageNumberPagination
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
