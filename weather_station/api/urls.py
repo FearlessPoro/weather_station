@@ -18,14 +18,15 @@ from django.urls import path, include
 from rest_framework import routers
 
 from weather_station.api.views import UserViewSet, StationViewSet, MeasurementTypeViewSet, \
-    StationMeasurementTypeViewSet, SendView, MeasurementViewSet, CustomObtainAuthToken
+    StationMeasurementTypeViewSet, SendView, MeasurementViewViewSet, CustomObtainAuthToken, MeasurementViewSet
 
 router = routers.SimpleRouter()
 router.register('users', UserViewSet)
 router.register('stations', StationViewSet)
 router.register('measurementType', MeasurementTypeViewSet)
 router.register('stationMeasurementType', StationMeasurementTypeViewSet)
-router.register("measurements", MeasurementViewSet)
+router.register("measurements", MeasurementViewViewSet)
+router.register("measurementManagement", MeasurementViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
@@ -36,4 +37,5 @@ urlpatterns = [
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('rest-auth/authenticate/', CustomObtainAuthToken.as_view()),
+
 ]

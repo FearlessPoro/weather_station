@@ -9,7 +9,6 @@ const {Header, Content, Footer} = Layout;
 
 const BasicLayout = (props) => {
 
-    let helloString = `Witaj, ${localStorage.getItem("username")}`
     return (
         <Layout className="layout">
             <Header style={{marginBottom: '50px'}}>

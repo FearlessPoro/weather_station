@@ -2,13 +2,11 @@ import React, {Component, Fragment} from "react";
 import {Button, Modal, ModalFooter, ModalHeader} from "reactstrap";
 
 import axios from "axios";
+import {MEASUREMENTS_MANAGEMENT_API} from "../../constants";
 
-import {STATIONS_API} from "../../constants";
-
-class ConfirmRemovalModal extends Component {
+class MeasurementRemoveModal extends Component {
     state = {
         modal: false,
-        url: ""
     };
 
     toggle = () => {
@@ -17,11 +15,12 @@ class ConfirmRemovalModal extends Component {
         }));
     };
 
-    deleteServer = () => {
-        axios.delete(this.props.url).then(() => {
-                this.props.resetState();
-                this.toggle()
-            });
+    deleteMeasurement = () => {
+        axios.delete(`${MEASUREMENTS_MANAGEMENT_API}${this.props.measurement.id}/`
+        ).then(() => {
+            this.toggle();
+            this.props.resetState();
+        });
     };
 
     render() {
@@ -32,7 +31,7 @@ class ConfirmRemovalModal extends Component {
                 </Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>
-                        Czy na pewno chcesz usunąć tą stację?
+                        Czy na pewno chcesz usunąć ten pomiar?
                     </ModalHeader>
 
                     <ModalFooter>
@@ -42,7 +41,7 @@ class ConfirmRemovalModal extends Component {
                         <Button
                             type="button"
                             color="primary"
-                            onClick={() => this.deleteServer(this.props.name)}
+                            onClick={this.deleteMeasurement}
                         >
                             Tak
                         </Button>
@@ -53,4 +52,4 @@ class ConfirmRemovalModal extends Component {
     }
 }
 
-export default ConfirmRemovalModal;
+export default MeasurementRemoveModal;

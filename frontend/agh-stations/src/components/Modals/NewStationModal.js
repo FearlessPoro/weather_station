@@ -22,14 +22,14 @@ class NewStationModal extends Component {
       title = "Dodaj nową stację";
 
       button = (
-        <Button
-          color="primary"
-          className="float-right"
+        <button
+          type="button"
+          class="btn btn-success"
           onClick={this.toggle}
-          style={{ minWidth: "200px" }}
+          style={{ minWidth: "200px", float: 'right', marginRight: '50px', marginBottom: '10px'}}
         >
           Dodaj stację
-        </Button>
+        </button>
       );
     }
 

@@ -9,7 +9,8 @@ class NewStationForm extends React.Component {
     state = {
         name: "",
         address: "",
-        newName: ""
+        newName: "",
+        newAddress: ""
     };
 
     componentDidMount() {
@@ -19,7 +20,7 @@ class NewStationForm extends React.Component {
         }
     }
 
-    onChange = e => {
+    onChange = (e) =>  {
         this.setState({[e.target.name]: e.target.value});
     };
 
@@ -27,38 +28,45 @@ class NewStationForm extends React.Component {
     //TODO CHECK IF STATION EXISTS AND RETURN ERROR
     createStation = e => {
         e.preventDefault();
-        axios.post(STATIONS_API, this.state).then(() => {
-            this.props.resetState();
-            this.props.toggle();
-        });
+        const config = {
+            headers: {'Authorization': `Token ${localStorage.getItem("token")}`}
+        };
+        axios.post(STATIONS_API, {name: this.state.newName, address: this.state.address}, config)
+            .then(() => {
+                this.props.resetState();
+                this.props.toggle();
+            });
     };
 
     editStation = e => {
         e.preventDefault();
+        const config = {
+            headers: {'Authorization': `Token ${localStorage.getItem("token")}`}
+        };
         axios.get(STATIONS_API + "?search=" + this.state.name.split(" ").join("+"))
             .then(res => this.setState({url: res.data[0]['url']}))
             .then(() => {
-                return axios.put(this.state.url, this.state)
+                return axios.put(this.state.url, {name: this.state.newName, address: this.state.address}, config)
             }).then(() => {
-                this.props.resetState();
-                this.props.toggle()
-            });
+            this.props.resetState();
+            this.props.toggle()
+        });
     };
 
-    defaultIfEmpty = value => {
-        return value === "" ? "" : value;
+    defaultIfEmpty = newName => {
+        return newName === "" ? this.state.name : newName;
     };
 
     render() {
         return (
             <Form onSubmit={this.props.station ? this.editStation : this.createStation}>
                 <FormGroup>
-                    <Label for="name">Nazwa:</Label>
+                    <Label for="newName">Nazwa:</Label>
                     <Input
                         type="text"
-                        name="name"
+                        name="newName"
                         onChange={this.onChange}
-                        value={this.defaultIfEmpty(this.state.name)}
+                        value={this.defaultIfEmpty(this.state.newName)}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -70,7 +78,7 @@ class NewStationForm extends React.Component {
                         value={this.defaultIfEmpty(this.state.address)}
                     />
                 </FormGroup>
-                <Button>Send</Button>
+                <Button type="submit">Send</Button>
             </Form>
         );
     }

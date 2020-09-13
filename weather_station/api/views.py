@@ -2,40 +2,47 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from weather_station.api.permissions import IsAdminOrReadOnly
+from weather_station.api.models import Station, MeasurementType, StationMeasurementType, MeasurementView, Measurement
 
-from weather_station.api.models import Station, MeasurementType, StationMeasurementType, MeasurementView
-from weather_station.api.permissions import IsAdminUserOrReadOnly
 from weather_station.api.serializers import StationSerializer, UserSerializer, MeasurementTypeSerializer, \
-    StationMeasurementTypeSerializer, MeasurementSerializer
+    StationMeasurementTypeSerializer, MeasurementViewSerializer, MeasurementSerializer
 from weather_station.common.constants import Constants
 from weather_station.common.process_measurement import ProcessMeasurement
 
 
 class StationViewSet(ModelViewSet):
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filter_fields = ['name']
+    search_fields = ['name']
 
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
 
-class MeasurementViewSet(ModelViewSet):
+class MeasurementViewViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['station']
     queryset = MeasurementView.objects.all()
+    serializer_class = MeasurementViewSerializer
+
+
+class MeasurementViewSet(ModelViewSet):
+    queryset = Measurement.objects.all()
     serializer_class = MeasurementSerializer
 
 
 class UserViewSet(ModelViewSet):
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     queryset = User.objects.all()
     serializer_class = UserSerializer

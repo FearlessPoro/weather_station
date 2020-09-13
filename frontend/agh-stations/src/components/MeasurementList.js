@@ -15,7 +15,6 @@ class MeasurementList extends Component {
                 <thead>
                 <tr>
                     <th>Czas pomiaru</th>
-                    <th>Nazwa stacji</th>
                     <th>Typy pomiarów</th>
                 </tr>
                 </thead>
@@ -28,7 +27,9 @@ class MeasurementList extends Component {
                     </tr>
                 ) : (
                     measurements.map(measurement => (
-                        <MeasurementItem measurement={measurement}/>
+                        <MeasurementItem
+                            measurement={measurement}
+                            resetState={this.props.resetState}/>
                     ))
                 )}
                 </tbody>

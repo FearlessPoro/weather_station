@@ -14,7 +14,14 @@ class Stations extends Component {
         currentStations: [],
         pageSize: 5,
         pageCount: 1,
-        page: 1
+        page: 1,
+        searchString: ""
+    }
+
+    handleSearch = async (e) => {
+        const result = e.target.value.split(" ").join("+");
+        await this.setState({searchString: result});
+        this.getStations();
     }
 
     handlePageClick = (pageNo) => {
@@ -38,11 +45,14 @@ class Stations extends Component {
     }
 
     getStations = () => {
-        axios.get(`${STATIONS_API}`).then(res => this.setState(
-            {
-                allStations: res.data,
-                pageCount: Math.ceil(res.data.length / this.state.pageSize)
-            })).then(() => this.setElementsForCurrentPage());
+        axios.get(this.state.searchString
+            ? `${STATIONS_API}?search=${this.state.searchString}`
+            : `${STATIONS_API}`)
+            .then(res => this.setState(
+                {
+                    allStations: res.data,
+                    pageCount: Math.ceil(res.data.length / this.state.pageSize)
+                })).then(() => this.setElementsForCurrentPage());
     };
 
     resetState = () => {
@@ -67,6 +77,7 @@ class Stations extends Component {
                             {...this.props}
                             stations={this.state.currentStations}
                             resetState={this.resetState}
+                            handleSearch={this.handleSearch}
                         />
                     </Col>
                 </Row>
@@ -80,14 +91,13 @@ class Stations extends Component {
                                     onChange={this.handlePageClick}
                                     size="small"
                                     total={this.state.allStations.length}
-                                    // showTotal={(total, range) =>
-                                    //     `${range[0]}-${range[1]} of ${total} items`}
+                                    showTotal={(total, range) =>
+                                        `${range[0]}-${range[1]} z ${total} stacji`}
                                     pageSize={this.state.pageSize}
                                 />
                             </Col>
                         </Row>
                         : null
-
                 }
             </Container>
         )

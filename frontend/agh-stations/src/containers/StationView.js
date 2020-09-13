@@ -15,10 +15,11 @@ class StationView extends Component {
     }
 
     getStation = () => {
-
-        axios.get(STATIONS_API + this.props.match.params.stationID)
+        axios.get(`${STATIONS_API}${this.props.match.params.stationID}/`)
             .then(res => this.setState({station: res.data}))
-            .then(() => axios.get(MEASUREMENTS_API + '?station=' + this.state.station.name.split(" ").join("+")))
+            .then(() => axios.get(
+                `${MEASUREMENTS_API}?station=${this.state.station.name.split(" ").join("+")}`
+            ))
             .then(res => this.setState({measurements: res.data}));
 
     };
@@ -40,4 +41,4 @@ class StationView extends Component {
     }
 }
 
-export default StationView
+export default StationView;

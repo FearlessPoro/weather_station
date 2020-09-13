@@ -3,9 +3,21 @@ import {Table} from "reactstrap";
 import NewStationModal from "./Modals/NewStationModal";
 import StationRemovalModal from "./Modals/StationRemovalModal";
 import {Link} from "react-router-dom";
+import {Input} from 'antd';
 
+const {Search} = Input;
 
 class StationList extends Component {
+
+    state = {
+        value: ""
+    }
+
+
+    handleSearch = (e) => {
+        this.props.handleSearch(e);
+    }
+
 
     render() {
         const stations = this.props.stations;
@@ -18,6 +30,9 @@ class StationList extends Component {
                 <tr>
                     <th>Nazwa</th>
                     <th>Adres</th>
+                    <th><Search placeholder="Wyszukaj stację"
+                                onChange={(e) => this.handleSearch(e)}
+                    /></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,14 +61,14 @@ class StationList extends Component {
                                 {
                                     localStorage.getItem("is_admin") ?
                                         <StationRemovalModal
-                                            name={station.name}
+                                            url={station.url}
                                             resetState={this.props.resetState}
                                         />
                                         : null
                                 }
                                 <Link key={station.id}
-                                      to={`/${station.id}`}
-                                      className="btn btn-primary">
+                                      to={`/stations/${station.id}`}
+                                      className="btn btn-info">
                                     Otwórz
                                 </Link>
                             </td>

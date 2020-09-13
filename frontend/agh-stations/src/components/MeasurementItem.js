@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Moment from "moment";
 import {Table} from "react-bootstrap";
+import MeasurementRemoveModal from "./Modals/MeasurementRemoveModal";
 
 class MeasurementItem extends Component {
 
@@ -31,6 +32,10 @@ class MeasurementItem extends Component {
     toggleDataDisplay = () => {
         this.setState({toggleDataDisplay: !this.state.toggleDataDisplay})
     }
+
+    // resetState = () => {
+    //     this.getStations();
+    // };
 
 
     displayData = (measurement) => {
@@ -63,6 +68,10 @@ class MeasurementItem extends Component {
         }
     }
 
+    resetState = () => {
+        this.props.resetState()
+    }
+
     render() {
         return (
             <tr key={this.props.measurement.id} onClick={this.toggleDataDisplay}>
@@ -70,20 +79,13 @@ class MeasurementItem extends Component {
                     {Moment(this.props.measurement.time_of_measurement)
                         .format("YYYY-MM-DD hh:mm:ss")}
                 </td>
-                <td>{this.props.measurement.station}</td>
                 <td>{this.displayData(this.props.measurement)}</td>
-                {/*TODO: ADD BUTTONS*/}
-                {/*<td align="middle" width='300px'>*/}
-                {/*/!*    <NewStationModal margin-right="10px"*!/*/}
-                {/*/!*                     create={false}*!/*/}
-                {/*/!*                     station={measurement}*!/*/}
-                {/*/!*                     resetState={this.props.resetState}*!/*/}
-                {/*/!*    />*!/*/}
-                {/*    <StationRemovalModal*/}
-                {/*        name={measurement.name}*/}
-                {/*        resetState={this.props.resetState}*/}
-                {/*    />*/}
-                {/*</td>*/}
+                <td align="middle" width='300px'>
+                    <MeasurementRemoveModal
+                        measurement={this.props.measurement}
+                        resetState={this.props.resetState}
+                    />
+                </td>
             </tr>
         )
     }
