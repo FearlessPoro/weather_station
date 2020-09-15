@@ -10,8 +10,10 @@ class Signup extends React.Component {
     onFinish = (values) => {
         if (!this.props.error) {
             this.props.onAuth(values.username, values.email, values.password, values.confirm)
+            alert("Konto założone pomyślnie.")
+            window.location.reload();
+            this.props.history.push('/login');
         }
-        this.props.history.push('/');
     };
 
     render() {
@@ -56,11 +58,20 @@ class Signup extends React.Component {
                     <Form.Item
                         name="password"
 
-                        rules={[
+                           rules={[
                             {
                                 required: true,
                                 message: 'To pole jest wymagane.',
                             },
+                            ({getFieldValue}) => ({
+                                validator(rule, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+
+                                    return Promise.reject('Podane hasła nie są identyczne.');
+                                },
+                            }),
                         ]}
                         hasFeedback
                     >
@@ -106,7 +117,7 @@ class Signup extends React.Component {
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit">
-                            Register
+                            Stwórz konto
                         </Button>
                     </Form.Item>
                 </Form>

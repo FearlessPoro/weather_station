@@ -47,7 +47,7 @@ const BasicLayout = (props) => {
                     props.isAuthenticated ?
                         <p style={{float: 'right'}}>
                             Witaj, {localStorage.getItem("username")}.
-                            Twoja jest ważna do {Moment(localStorage.getItem("expirationDate"))
+                            Twoja sesja jest ważna do {Moment(localStorage.getItem("expirationDate"))
                             .format("hh:mm:ss")} <a style={{color: "blue"}} onClick={refreshSession}>Odśwież sesję</a>
                         </p>
                         :

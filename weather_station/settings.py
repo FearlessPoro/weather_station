@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "rest_auth",
     'rest_auth.registration',
 
+
     'weather_station',
 ]
 
@@ -133,13 +134,10 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'OPTIONS': {
+            'min_length': 6,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
@@ -166,6 +164,7 @@ STATIC_URL = '/static/'
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True # E-mail address is automatically confirmed by a GET request
 # CSRF_COOKIE_HTTPONLY = True
 # CSRF_COOKIE_SECURE = True
 # CSRF_COOKIE_NAME = "XSRF-TOKEN"

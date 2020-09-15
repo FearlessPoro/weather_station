@@ -16,7 +16,7 @@ class NormalLoginForm extends React.Component {
         if (!this.props.error) {
             this.props.onAuth(values.username, values.password);
             this.props.history.push('/');
-        } else this.props.history.push('/login');
+        }
 
     };
 

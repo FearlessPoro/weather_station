@@ -2,12 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-# class User(models.Model):
-#     username = models.CharField(max_length=40)
-#     email = models.CharField(max_length=100)
-#     password = models.CharField(max_length=30)
-
-
 class Station(models.Model):
     name = models.CharField(max_length=200, unique=True)
     address = models.CharField(max_length=200)
@@ -119,6 +113,5 @@ class StationMeasurementType(models.Model):
     measurement_type = models.ForeignKey(MeasurementType, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (('station', 'measurement_type'), )
+        unique_together = (('station', 'measurement_type'),)
         db_table = 'station_measurement_type'
-

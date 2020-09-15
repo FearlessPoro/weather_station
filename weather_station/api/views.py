@@ -20,8 +20,7 @@ from weather_station.common.process_measurement import ProcessMeasurement
 
 
 class StationViewSet(ModelViewSet):
-    # TODO UNCOMENT
-    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filter_fields = ['name']
@@ -54,7 +53,7 @@ class UserViewSet(ModelViewSet):
 
 
 class StationUserViewSet(ModelViewSet):
-    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filter_fields = ['user']
@@ -86,11 +85,10 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 
 class SendView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     @staticmethod
-    @csrf_exempt
-    def send(request):
+    def post(request):
         if request.method == 'POST':
             return_message = ProcessMeasurement.parse_send_request(request)
             return JsonResponse(return_message, safe=False)
