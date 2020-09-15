@@ -5,7 +5,6 @@ import {LoadingOutlined, LockOutlined, UserOutlined} from '@ant-design/icons';
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
 import * as actions from '../store/actions/auth';
-import axios from "axios";
 
 const antIcon = <LoadingOutlined style={{fontSize: 24}} spin/>;
 
@@ -52,7 +51,8 @@ class NormalLoginForm extends React.Component {
                                 },
                             ]}
                             >
-                                <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Nazwa użytkownika"/>
+                                <Input prefix={<UserOutlined className="site-form-item-icon"/>}
+                                       placeholder="Nazwa użytkownika"/>
                             </Form.Item>
                             <Form.Item name="password" rules={[
                                 {
@@ -67,7 +67,7 @@ class NormalLoginForm extends React.Component {
                                 />
                             </Form.Item>
 
-                            {/*  <a className="login-form-forgot" href="">*/}
+                            {/*  TODO: <a className="login-form-forgot" href="">*/}
                             {/*    Forgot password*/}
                             {/*  </a>*/}
                             {/*</Form.Item>*/}

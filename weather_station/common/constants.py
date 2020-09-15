@@ -26,5 +26,5 @@ class Constants:
     HUMIDITY_VALUE_VARIABLE = 'humidity_value'
     HUMIDITY_UNIT_VARIABLE = 'humidity_unit'
     STATION_ID_VARIABLE = "Station_ID"
-    TIME_OF_MEASUREMENT_VARIABLE = "Time_of_measurements"
+    TIME_OF_MEASUREMENT_VARIABLE = "time_of_measurements"
 

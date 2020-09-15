@@ -9,17 +9,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
-from weather_station.api.permissions import IsAdminOrReadOnly
-from weather_station.api.models import Station, MeasurementType, StationMeasurementType, MeasurementView, Measurement
 
+from weather_station.api.models import Station, MeasurementType, StationMeasurementType, MeasurementView, Measurement, \
+    StationUser
+from weather_station.api.permissions import IsAdminOrReadOnly
 from weather_station.api.serializers import StationSerializer, UserSerializer, MeasurementTypeSerializer, \
-    StationMeasurementTypeSerializer, MeasurementViewSerializer, MeasurementSerializer
+    StationMeasurementTypeSerializer, MeasurementViewSerializer, MeasurementSerializer, StationUserSerializer
 from weather_station.common.constants import Constants
 from weather_station.common.process_measurement import ProcessMeasurement
 
 
 class StationViewSet(ModelViewSet):
-    permission_classes = [IsAdminOrReadOnly]
+    # TODO UNCOMENT
+    # permission_classes = [IsAdminOrReadOnly]
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filter_fields = ['name']
@@ -44,8 +46,22 @@ class MeasurementViewSet(ModelViewSet):
 class UserViewSet(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username']
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class StationUserViewSet(ModelViewSet):
+    # permission_classes = [IsAdminOrReadOnly]
+
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filter_fields = ['user']
+    search_fields = ['user']
+
+    queryset = StationUser.objects.all()
+    serializer_class = StationUserSerializer
 
 
 class MeasurementTypeViewSet(ModelViewSet):

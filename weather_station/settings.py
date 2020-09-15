@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'corsheaders',
     'rest_framework',
     "rest_framework.authtoken",

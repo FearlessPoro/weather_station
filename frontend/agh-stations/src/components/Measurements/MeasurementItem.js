@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Moment from "moment";
 import {Table} from "react-bootstrap";
-import MeasurementRemoveModal from "./Modals/MeasurementRemoveModal";
+import MeasurementRemoveModal from "../Modals/MeasurementRemoveModal";
 
 class MeasurementItem extends Component {
 
@@ -74,12 +74,12 @@ class MeasurementItem extends Component {
 
     render() {
         return (
-            <tr key={this.props.measurement.id} onClick={this.toggleDataDisplay}>
-                <td width={'200px'}>
+            <tr key={this.props.measurement.id}>
+                <td width={'200px'} onClick={this.toggleDataDisplay}>
                     {Moment(this.props.measurement.time_of_measurement)
                         .format("YYYY-MM-DD hh:mm:ss")}
                 </td>
-                <td>{this.displayData(this.props.measurement)}</td>
+                <td onClick={this.toggleDataDisplay}>{this.displayData(this.props.measurement)}</td>
                 <td align="middle" width='300px'>
                     <MeasurementRemoveModal
                         measurement={this.props.measurement}

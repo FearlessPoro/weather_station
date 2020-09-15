@@ -1,6 +1,6 @@
 import * as actionConstants from './actionConstants'
 import axios from "axios"
-import {AUTHENTICATE_URL, LOGIN_URL, REGISTRATION_URL} from "../../constants";
+import {AUTHENTICATE_URL, REGISTRATION_URL} from "../../constants";
 
 
 export const authStart = () => {
@@ -44,12 +44,12 @@ export const checkAuthTimeout = expirationTime => {
 export const authLogin = (username, password) => {
     return dispatch => {
         dispatch(authStart());
-        axios.post(AUTHENTICATE_URL,  {
+        axios.post(AUTHENTICATE_URL, {
             username: username,
             password: password
         })
             .then(res => {
-                const token =res.data.key;
+                const token = res.data.key;
                 const expirationDate = new Date(new Date().getTime() + 3600000);
                 localStorage.setItem('token', token);
                 localStorage.setItem('expirationDate', expirationDate);
@@ -65,7 +65,7 @@ export const authLogin = (username, password) => {
     }
 }
 
-export const authSignup = (username, email,  password, passwordRepeat) => {
+export const authSignup = (username, email, password, passwordRepeat) => {
     return dispatch => {
         dispatch(authStart());
         axios.post(REGISTRATION_URL, {
@@ -75,7 +75,7 @@ export const authSignup = (username, email,  password, passwordRepeat) => {
             password2: passwordRepeat
         })
             .then(res => {
-                const token =res.data.key;
+                const token = res.data.key;
                 const expirationDate = new Date(new Date().getTime() + 3600000);
                 localStorage.setItem('token', token);
                 localStorage.setItem('expirationDate', expirationDate);

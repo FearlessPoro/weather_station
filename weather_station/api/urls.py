@@ -18,7 +18,8 @@ from django.urls import path, include
 from rest_framework import routers
 
 from weather_station.api.views import UserViewSet, StationViewSet, MeasurementTypeViewSet, \
-    StationMeasurementTypeViewSet, SendView, MeasurementViewViewSet, CustomObtainAuthToken, MeasurementViewSet
+    StationMeasurementTypeViewSet, SendView, MeasurementViewViewSet, CustomObtainAuthToken, MeasurementViewSet, \
+    StationUserViewSet
 
 router = routers.SimpleRouter()
 router.register('users', UserViewSet)
@@ -27,6 +28,7 @@ router.register('measurementType', MeasurementTypeViewSet)
 router.register('stationMeasurementType', StationMeasurementTypeViewSet)
 router.register("measurements", MeasurementViewViewSet)
 router.register("measurementManagement", MeasurementViewSet)
+router.register("stationUser", StationUserViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

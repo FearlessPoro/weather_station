@@ -3,8 +3,6 @@ import {Button, Modal, ModalFooter, ModalHeader} from "reactstrap";
 
 import axios from "axios";
 
-import {STATIONS_API} from "../../constants";
-
 class ConfirmRemovalModal extends Component {
     state = {
         modal: false,
@@ -18,10 +16,13 @@ class ConfirmRemovalModal extends Component {
     };
 
     deleteServer = () => {
-        axios.delete(this.props.url).then(() => {
-                this.props.resetState();
-                this.toggle()
-            });
+        const config = {
+            headers: {'Authorization': `Token ${localStorage.getItem("token")}`}
+        };
+        axios.delete(this.props.url, config).then(() => {
+            this.props.resetState();
+            this.toggle()
+        });
     };
 
     render() {

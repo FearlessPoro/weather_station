@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import Measurements from "./Measurements";
+import Measurements from "../Measurements/Measurements";
 import axios from "axios";
-import {MEASUREMENTS_API, STATIONS_API} from "../constants";
+import {MEASUREMENTS_API, STATIONS_API} from "../../constants";
 
 class StationView extends Component {
 

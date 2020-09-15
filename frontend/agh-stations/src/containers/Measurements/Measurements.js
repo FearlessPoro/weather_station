@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "reactstrap";
-import MeasurementList from "../components/MeasurementList";
+import MeasurementList from "../../components/Measurements/MeasurementList";
 
 
 class Measurements extends Component {

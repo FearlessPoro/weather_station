@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Table} from "reactstrap";
-import NewStationModal from "./Modals/NewStationModal";
-import StationRemovalModal from "./Modals/StationRemovalModal";
+import NewStationModal from "../Modals/NewStationModal";
+import StationRemovalModal from "../Modals/StationRemovalModal";
 import {Link} from "react-router-dom";
 import {Input} from 'antd';
 

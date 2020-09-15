@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Col, Container, Row} from "reactstrap";
-import NewStationsModal from "../components/Modals/NewStationModal";
+import NewStationsModal from "../../components/Modals/NewStationModal";
 import axios from "axios";
-import {STATIONS_API} from "../constants";
-import StationList from "../components/StationList";
+import {STATIONS_API} from "../../constants";
+import StationList from "../../components/Stations/StationList";
 import {Pagination} from "antd";
 
 
@@ -12,7 +12,7 @@ class Stations extends Component {
         allStations: [],
         offset: 0,
         currentStations: [],
-        pageSize: 5,
+        pageSize: 10,
         pageCount: 1,
         page: 1,
         searchString: ""

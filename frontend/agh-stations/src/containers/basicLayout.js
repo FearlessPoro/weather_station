@@ -4,8 +4,14 @@ import {Link, withRouter} from "react-router-dom";
 import * as actions from "../store/actions/auth";
 import {connect} from "react-redux";
 import HomeOutlined from "@ant-design/icons/lib/icons/HomeOutlined";
+import Moment from "moment";
 
 const {Header, Content, Footer} = Layout;
+
+const refreshSession = () => {
+    localStorage.setItem("expirationDate", new Date(new Date().getTime() + 3600000));
+    window.location.reload();
+}
 
 const BasicLayout = (props) => {
 
@@ -16,25 +22,33 @@ const BasicLayout = (props) => {
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['/']}>
                     <Menu.Item key="/"><Link to='/'><HomeOutlined style={{marginLeft: "10px"}}/></Link></Menu.Item>
                     <Menu.Item key="/stations/"><Link to='/stations/'>Stacje</Link></Menu.Item>
+                    <Menu.Item key="/users/"><Link to='/users/'>Użytkownicy</Link></Menu.Item>
                     {
                         props.isAuthenticated ?
                             <Menu.Item key="logout" onClick={props.logout} style={{float: 'right'}}>
                                 Wyloguj się
                             </Menu.Item>
                             :
-
                             <Menu.Item key="/login" style={{float: 'right'}}>
                                 <Link to='/login/'>
                                     Logowanie
                                 </Link>
                             </Menu.Item>
                     }
-
+                    {
+                        props.isAuthenticated ? (
+                            <Menu.Item key="/profile/" style={{float: 'right'}}>
+                                <Link to='/profile/'>Twój profil</Link>
+                            </Menu.Item>
+                        ) : null
+                    }
                 </Menu>
                 {
                     props.isAuthenticated ?
                         <p style={{float: 'right'}}>
-                            Witaj, {localStorage.getItem("username")}
+                            Witaj, {localStorage.getItem("username")}.
+                            Twoja jest ważna do {Moment(localStorage.getItem("expirationDate"))
+                            .format("hh:mm:ss")} <a style={{color: "blue"}} onClick={refreshSession}>Odśwież sesję</a>
                         </p>
                         :
                         null
