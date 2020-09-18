@@ -22,7 +22,11 @@ class NormalLoginForm extends React.Component {
 
     render() {
         let errorMessage = null;
-        if (this.props.error) {
+        if (this.props.error && this.props.error.message === "Request failed with status code 400") {
+            errorMessage = (
+                <p style={{color: 'red'}}>"Błędne dane logowania."</p>
+            )
+        } else if (this.props.error) {
             errorMessage = (
                 <p style={{color: 'red'}}>{this.props.error.message}</p>
             )
@@ -65,12 +69,6 @@ class NormalLoginForm extends React.Component {
                                        placeholder="Hasło"
                                 />
                             </Form.Item>
-
-                            {/*  TODO: <a className="login-form-forgot" href="">*/}
-                            {/*    Forgot password*/}
-                            {/*  </a>*/}
-                            {/*</Form.Item>*/}
-
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" className="login-form-button">
                                     Zaloguj się

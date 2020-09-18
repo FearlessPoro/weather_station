@@ -12,7 +12,7 @@ class Stations extends Component {
         allStations: [],
         offset: 0,
         currentStations: [],
-        pageSize: 10,
+        pageSize: 5,
         pageCount: 1,
         page: 1,
         searchString: ""

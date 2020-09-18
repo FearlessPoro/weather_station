@@ -22,14 +22,12 @@ class NewStationForm extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
-
-    //TODO CHECK IF STATION EXISTS AND RETURN ERROR
     createStation = e => {
         e.preventDefault();
         const config = {
             headers: {'Authorization': `Token ${localStorage.getItem("token")}`}
         };
-        axios.post(STATIONS_API, {name: this.state.newName, address: this.state.address}, config)
+        axios.post(STATIONS_API, {name: this.state.newName, description: this.state.description}, config)
             .then(() => {
                 this.props.resetState();
                 this.props.toggle();
@@ -44,9 +42,8 @@ class NewStationForm extends React.Component {
         axios.get(STATIONS_API + "?name=" + this.state.name.split(" ").join("+"))
             .then((res) => {
                 const station = res.data[0]
-                console.log(`${station.name},  new: ${this.state.newName}, ${this.state.newName === station.name}`)
                 const payload = {
-                    name: this.state.newName === station.name ? this.state.newName: station.name,
+                    name: this.state.newName === "" ? station.name: this.state.newName,
                     description: this.state.description
                 };
                 return axios.put(res.data[0]['url'], payload, config);
