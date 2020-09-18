@@ -41,7 +41,7 @@ const BasicLayout = (props) => {
                         <p style={{float: 'right'}}>
                             Zalogowano jako: {localStorage.getItem("username")}.
                             Twoja sesja jest ważna do {Moment(localStorage.getItem("expirationDate"))
-                            .format("hh:mm:ss")} <a style={{color: "blue"}} onClick={refreshSession}>Odśwież sesję</a>
+                            .format("HH:mm:ss")} <a style={{color: "blue"}} onClick={refreshSession}>Odśwież sesję</a>
                         </p>
                         :
                         null

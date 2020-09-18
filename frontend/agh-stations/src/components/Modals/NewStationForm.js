@@ -78,7 +78,7 @@ class NewStationForm extends React.Component {
                         value={this.state.description}
                     />
                 </FormGroup>
-                <Button type="submit">Send</Button>
+                <Button type="submit">Wyślij</Button>
             </Form>
         );
     }

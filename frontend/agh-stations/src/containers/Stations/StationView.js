@@ -78,7 +78,15 @@ class StationView extends Component {
                         </p>
                         <ReactJson src={jsonData}/>
                         <p>
-
+                            Aby pomyślnie przejść autoryzację, należy w headerze requestu
+                            załączyć pole "Authorization" o wartości "Token token_użytkownika"
+                            Token można otrzymać po wysłaniu POST requestu na adres API:<br/>
+                            /rest-auth/authenticate/<br/>
+                            Zawierającego "username" i "password" w polu danych. <br/>
+                            Token jest również dostępny po zalogowaniu się
+                            do przeglądarki i włączeniu trybu developera(F12) w zakładce
+                            Application -> Storage -> Local Storage.
+                            Pole token zawiera wartość tokenu danego użytkownika.
                         </p>
                     </div>
                 ) : (

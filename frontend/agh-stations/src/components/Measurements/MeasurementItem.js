@@ -106,7 +106,7 @@ class MeasurementItem extends Component {
             <tr key={this.props.measurement.id}>
                 <td width={'200px'} onClick={this.toggleDataDisplay}>
                     {Moment(this.props.measurement.time_of_measurement)
-                        .format("YYYY-MM-DD hh:mm:ss")}
+                        .format("YYYY-MM-DD HH:mm:ss")}
                 </td>
                 <td onClick={this.toggleDataDisplay}>{this.displayData(this.state.measurementData)}</td>
                 {this.props.isStationAdmin ?

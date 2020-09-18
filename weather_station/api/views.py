@@ -24,7 +24,7 @@ class StationViewSet(ModelViewSet):
 
 
 class MeasurementViewSet(ModelViewSet):
-    queryset = Measurement.objects.all()
+    queryset = Measurement.objects.all().order_by('-time_of_measurement')
     serializer_class = MeasurementSerializer
 
 
