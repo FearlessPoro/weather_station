@@ -46,7 +46,7 @@ class User extends React.Component {
                     )
                 }</td>
                 {
-                    localStorage.getItem("is_admin") ?
+                    localStorage.getItem("is_admin") ==='true' ?
                         <td style={{width: '500px'}}>
                             <StationsSelect
                                 resetState={this.props.resetState}

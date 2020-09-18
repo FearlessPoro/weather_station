@@ -1,66 +1,90 @@
 import React, {Component} from "react";
-import Moment from "moment";
 import {Table} from "react-bootstrap";
+import axios from 'axios';
+import {MEASUREMENTS_DATA_API} from "../../constants";
+import Moment from "moment";
 import MeasurementRemoveModal from "../Modals/MeasurementRemoveModal";
 
 class MeasurementItem extends Component {
 
     state = {
-        toggleDataDisplay: true
+        toggleDataDisplay: true,
+        measurementData: [],
+        measurementLocation: [],
+        measurements: "",
     }
 
-    skipDefaultFields = (key, value) => {
-        return key !== 'url'
-            && key !== "time_of_measurement"
-            && key !== 'station'
-            && key !== 'id'
-            && !key.match('^.*_unit$')
-            && value != null;
+
+    componentDidMount() {
+        this.resetState();
     }
 
-    //TODO: change names to polish via dictionary?
-    getMeasurementTypes = measurement => {
-        let result = ""
-        for (let [key, value] of Object.entries(measurement)) {
-            if (this.skipDefaultFields(key, value)) {
-                result += key + ", ";
+    getMeasurementData = () => {
+        axios.get(`${MEASUREMENTS_DATA_API}?measurement=${this.props.measurement.id}`)
+            .then((res) => this.setState({
+                measurementData: res.data
+            })).then((res) => {
+            let result = ""
+            this.state.measurementData.map((data) => {
+                result = `${data.name}, ${result}`;
+            })
+            if (this.checkValidLatLon(this.props.measurement)) {
+                result = `Dane lokalizacji, ${result}`
             }
-        }
-        return result;
+            this.setState({
+                measurements: result
+            })
+        })
     }
+
 
     toggleDataDisplay = () => {
         this.setState({toggleDataDisplay: !this.state.toggleDataDisplay})
     }
 
-    // resetState = () => {
-    //     this.getStations();
-    // };
+    resetState = () => {
+        this.getMeasurementData();
 
+    };
 
-    displayData = (measurement) => {
+    checkValidLatLon = (measurement) => {
+        console.log(measurement.longitude !== 0, measurement.latitude !== 0)
+        return measurement.longitude !== 0 || measurement.latitude !== 0
+    }
+
+    displayData = () => {
+        const measurementData = this.state.measurementData
         if (this.state.toggleDataDisplay) {
-            return this.getMeasurementTypes(measurement);
+            return this.state.measurements;
         } else {
             return (
                 <Table size="sm" responsive bordered="dark">
                     <tbody>
-                    {!measurement || measurement.length <= 0 ? (
+                    {!measurementData || measurementData.length <= 0 ? (
                         <tr>
                             <td colSpan="6" align="center">
-                                <b>Ta lista jest pusta.</b>
+                                <b>Brak pomiarów.</b>
                             </td>
                         </tr>
                     ) : (
-                        Object.keys(measurement).filter((key) => {
-                            return this.skipDefaultFields(key, measurement[key])
-                        }).map((key) => (
-                                <tr key={key}>
-                                    <th>{key}</th>
-                                    <td>{`${measurement[key]} ${measurement[key + '_unit']}`}</td>
+                        measurementData.map((measurement) => (
+                                <tr key={measurement.id}>
+                                    <th>{measurement.name}</th>
+                                    <td>{`${measurement.value} ${measurement.unit}`}</td>
                                 </tr>
                             )
-                        ))}
+                        )
+                    )}
+                    {this.checkValidLatLon(this.props.measurement) ?
+                        (
+                            <tr key={this.props.measurement.id}>
+                                <th>GPS</th>
+                                <td>{`Szerokość: ${this.props.measurement.latitude}, Długość: ${this.props.measurement.longitude}`}</td>
+                            </tr>
+
+                        )
+                        : null
+                    }
 
                     </tbody>
                 </Table>
@@ -68,9 +92,14 @@ class MeasurementItem extends Component {
         }
     }
 
-    resetState = () => {
-        this.props.resetState()
-    }
+
+// {
+//     this.checkValidLatLon(measurement) ? (
+//         <th>{measurement.name}</th>
+//         <td>{`${measurement.value} ${measurement.unit}`}</td>
+//     )
+//
+// }
 
     render() {
         return (
@@ -79,16 +108,18 @@ class MeasurementItem extends Component {
                     {Moment(this.props.measurement.time_of_measurement)
                         .format("YYYY-MM-DD hh:mm:ss")}
                 </td>
-                <td onClick={this.toggleDataDisplay}>{this.displayData(this.props.measurement)}</td>
-                <td align="middle" width='300px'>
-                    <MeasurementRemoveModal
-                        measurement={this.props.measurement}
-                        resetState={this.props.resetState}
-                    />
-                </td>
+                <td onClick={this.toggleDataDisplay}>{this.displayData(this.state.measurementData)}</td>
+                {this.props.isStationAdmin ?
+                    <td align="middle" width='300px'>
+                        <MeasurementRemoveModal
+                            measurement={this.props.measurement}
+                        />
+                    </td>
+                    : null
+                }
             </tr>
         )
     }
 }
 
-export default MeasurementItem
+export default MeasurementItem;

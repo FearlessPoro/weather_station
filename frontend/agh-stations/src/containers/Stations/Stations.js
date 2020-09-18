@@ -62,8 +62,9 @@ class Stations extends Component {
     render() {
         return (
             <Container style={{marginTop: "20px"}}>
-                <h1>Lista wszystkich stacji:</h1>
-                {localStorage.getItem("is_admin") ?
+                <h1>Stacje</h1>
+                <p>Na tej stronie możesz przeglądać dane dotyczące wszystkich stacji.</p>
+                {localStorage.getItem("is_admin") ==='true' ?
                     <Row>
                         <Col>
                             <NewStationsModal create={true} resetState={this.resetState}/>

@@ -29,7 +29,9 @@ class MeasurementList extends Component {
                     measurements.map(measurement => (
                         <MeasurementItem
                             measurement={measurement}
-                            resetState={this.props.resetState}/>
+                            isStationAdmin={this.props.isStationAdmin}
+                        />
+
                     ))
                 )}
                 </tbody>

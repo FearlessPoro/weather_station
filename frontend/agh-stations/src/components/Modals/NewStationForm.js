@@ -8,15 +8,13 @@ import {STATIONS_API} from "../../constants";
 class NewStationForm extends React.Component {
     state = {
         name: "",
-        address: "",
+        description: "",
         newName: "",
-        newAddress: ""
     };
 
     componentDidMount() {
         if (this.props.station) {
-            const {name, address} = this.props.station;
-            this.setState({name, address});
+            this.setState({name: this.props.station.name, description: this.props.station.description});
         }
     }
 
@@ -43,10 +41,15 @@ class NewStationForm extends React.Component {
         const config = {
             headers: {'Authorization': `Token ${localStorage.getItem("token")}`}
         };
-        axios.get(STATIONS_API + "?search=" + this.state.name.split(" ").join("+"))
-            .then(res => this.setState({url: res.data[0]['url']}))
-            .then(() => {
-                return axios.put(this.state.url, {name: this.state.newName, address: this.state.address}, config)
+        axios.get(STATIONS_API + "?name=" + this.state.name.split(" ").join("+"))
+            .then((res) => {
+                const station = res.data[0]
+                console.log(`${station.name},  new: ${this.state.newName}, ${this.state.newName === station.name}`)
+                const payload = {
+                    name: this.state.newName === station.name ? this.state.newName: station.name,
+                    description: this.state.description
+                };
+                return axios.put(res.data[0]['url'], payload, config);
             }).then(() => {
             this.props.resetState();
             this.props.toggle()
@@ -70,12 +73,12 @@ class NewStationForm extends React.Component {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="address">Adres:</Label>
+                    <Label for="description">Opis stacji:</Label>
                     <Input
                         type="text"
-                        name="address"
+                        name="description"
                         onChange={this.onChange}
-                        value={this.defaultIfEmpty(this.state.address)}
+                        value={this.state.description}
                     />
                 </FormGroup>
                 <Button type="submit">Send</Button>

@@ -35,18 +35,11 @@ const BasicLayout = (props) => {
                                 </Link>
                             </Menu.Item>
                     }
-                    {
-                        props.isAuthenticated ? (
-                            <Menu.Item key="/profile/" style={{float: 'right'}}>
-                                <Link to='/profile/'>Twój profil</Link>
-                            </Menu.Item>
-                        ) : null
-                    }
                 </Menu>
                 {
                     props.isAuthenticated ?
                         <p style={{float: 'right'}}>
-                            Witaj, {localStorage.getItem("username")}.
+                            Zalogowano jako: {localStorage.getItem("username")}.
                             Twoja sesja jest ważna do {Moment(localStorage.getItem("expirationDate"))
                             .format("hh:mm:ss")} <a style={{color: "blue"}} onClick={refreshSession}>Odśwież sesję</a>
                         </p>

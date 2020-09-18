@@ -10,11 +10,10 @@ class Measurements extends Component {
             <Container style={{marginTop: "20px"}}>
                 <Row>
                     <Col>
-                        <h1>Stacja: {this.props.station.name}</h1>
-                        <h2>Pomiary dla tej stacji:</h2>
                         <MeasurementList
                             measurements={this.props.measurements}
-                            resetState={this.props.resetState}
+                            station={this.props.station}
+                            isStationAdmin={this.props.isStationAdmin}
                         />
                     </Col>
                 </Row>

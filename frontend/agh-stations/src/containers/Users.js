@@ -70,7 +70,9 @@ class Users extends Component {
     render() {
         return (
             <Container style={{marginTop: "20px"}}>
-                <h1>Lista wszystkich użytkowników:</h1>
+                <h1>Użytkownicy</h1>
+                <p>Na tej stronie możesz przeglądać dane dotyczące stacji i ich adminów.</p>
+
                 <Row>
                     <Col>
                         <UserList

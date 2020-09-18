@@ -18,7 +18,6 @@ class StationList extends Component {
         this.props.handleSearch(e);
     }
 
-
     render() {
         const stations = this.props.stations;
 
@@ -28,9 +27,9 @@ class StationList extends Component {
             <Table bordered hover responsive>
                 <thead>
                 <tr>
-                    <th>Nazwa</th>
-                    <th>Adres</th>
-                    <th><Search placeholder="Wyszukaj stację"
+                    <th style={{width: '20%'}}>Nazwa</th>
+                    <th style={{width: '40%'}}>Opis stacji</th>
+                    <th style={{width: '20%'}}><Search placeholder="Wyszukaj stację"
                                 onChange={(e) => this.handleSearch(e)}
                     /></th>
                 </tr>
@@ -47,10 +46,10 @@ class StationList extends Component {
 
                         <tr key={station.id}>
                             <td>{station.name}</td>
-                            <td>{station.address}</td>
-                            <td align="middle" width='300px'>
+                            <td>{station.description}</td>
+                            <td align="middle">
                                 {
-                                    localStorage.getItem("is_admin") ?
+                                    localStorage.getItem("is_admin") ==='true' ?
                                         <NewStationModal margin-right="10px"
                                                          create={false}
                                                          station={station}
@@ -59,7 +58,7 @@ class StationList extends Component {
                                         : null
                                 }
                                 {
-                                    localStorage.getItem("is_admin") ?
+                                    localStorage.getItem("is_admin") ==='true' ?
                                         <StationRemovalModal
                                             url={station.url}
                                             resetState={this.props.resetState}

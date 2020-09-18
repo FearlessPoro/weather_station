@@ -1,40 +1,97 @@
 import React, {Component} from "react";
 import Measurements from "../Measurements/Measurements";
 import axios from "axios";
-import {MEASUREMENTS_API, STATIONS_API} from "../../constants";
+import {MEASUREMENTS_API, STATIONS_API, USERS_API} from "../../constants";
+import ReactJson from "react-json-view";
 
 class StationView extends Component {
 
     state = {
         station: {},
-        measurements: []
-
+        measurements: [],
+        isStationAdmin: false
     }
+
     componentDidMount() {
-        this.resetState();
+        this.getData();
     }
 
-    getStation = () => {
+    getData = () => {
         axios.get(`${STATIONS_API}${this.props.match.params.stationID}/`)
             .then(res => this.setState({station: res.data}))
-            .then(() => axios.get(
-                `${MEASUREMENTS_API}?station=${this.state.station.name.split(" ").join("+")}`
-            ))
-            .then(res => this.setState({measurements: res.data}));
+            .then(() => {
+                    if (localStorage.getItem("username")) {
+                        axios.get(`${USERS_API}?username=${localStorage.getItem("username")}`)
+                            .then((res) => {
+                                if (Object.keys(this.state.station).length !== 0) {
+                                    const result = this.state.station.user.some((user) => {
+                                        return user.url === res.data.url
+                                    })
+                                    this.setState({
+                                        isStationAdmin: result
+                                    })
+                                }
+
+                            })
+                    }
+                }
+            ).then(() => axios.get(
+            `${MEASUREMENTS_API}?id=${this.state.station.id}`
+        ))
+            .then(res => this.setState({measurements: res.data}))
 
     };
 
-    resetState = () => {
-        this.getStation();
-    };
 
     render() {
+        const jsonData = {
+            "time_of_measurement": "2020-09-16 00:39:01",
+            "station_id": 8,
+            "measurement_data": [
+                {
+                    "name": "PM 10",
+                    "value": 3,
+                    "unit": "µg/m³"
+                },
+                {
+                    "name": "PM 2,5",
+                    "value": 2.3,
+                    "unit": "µg/m³"
+                },
+                {
+                    "name": "Temperatura",
+                    "value": 25,
+                    "unit": "°C"
+                }
+            ]
+        }
         return (
             <div>
+                <h1>Stacja: {this.state.station.name}</h1>
+                {this.state.isStationAdmin ? (
+                    <div>
+                        <p>
+                            Jako admin stacji możesz dodawać dane dla tej stacji.
+                            W tym celu wyślij dane w POST requeście na adres backendowego API na adres:<br/>
+                            /api/send/<br/>
+                            Ciało request'u powinno być następującej postaci:
+                        </p>
+                        <ReactJson src={jsonData}/>
+                        <p>
+
+                        </p>
+                    </div>
+                ) : (
+                    <p>
+                        Zaawansowany widok stacji pozwala na wyświetlanie pomiarów wysyłanych do tej stacji.
+                    </p>
+                )
+                }
                 <Measurements
                     station={this.state.station}
+                    isStationAdmin={this.state.isStationAdmin}
                     measurements={this.state.measurements}
-                    resetState={this.resetState}/>
+                />
             </div>
 
         )

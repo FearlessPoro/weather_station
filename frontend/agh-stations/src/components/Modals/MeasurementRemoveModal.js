@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Button, Modal, ModalFooter, ModalHeader} from "reactstrap";
 
 import axios from "axios";
-import {MEASUREMENTS_MANAGEMENT_API} from "../../constants";
+import {MEASUREMENTS_API} from "../../constants";
 
 class MeasurementRemoveModal extends Component {
     state = {
@@ -16,11 +16,15 @@ class MeasurementRemoveModal extends Component {
     };
 
     deleteMeasurement = () => {
-        axios.delete(`${MEASUREMENTS_MANAGEMENT_API}${this.props.measurement.id}/`
-        ).then(() => {
+        const config = {
+            headers: {'Authorization': `Token ${localStorage.getItem("token")}`}
+        };
+        axios.delete(`${MEASUREMENTS_API}${this.props.measurement.id}/`, config)
+            .then(() => {
             this.toggle();
-            this.props.resetState();
-        });
+            // this.props.resetState();
+            window.location.reload();
+            });
     };
 
     render() {
