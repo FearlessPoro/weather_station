@@ -12,7 +12,7 @@ from weather_station.common.process_measurement import parse_send_request
 
 
 class StationViewSet(ModelViewSet):
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
 
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filter_fields = ['name', 'id']
