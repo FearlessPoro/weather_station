@@ -12,9 +12,11 @@ class IsAdminOrReadOnly(BasePermission):
 
 class isStationAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
         body_data = json.loads(request.body)
         valid_stations = list(StationUser.objects.filter(user=request.user.id))
-        if request.method in SAFE_METHODS or check_admin_privileges(body_data["station"], valid_stations):
+        if check_admin_privileges(body_data["station"], valid_stations):
             return True
         return False
 

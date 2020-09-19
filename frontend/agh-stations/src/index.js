@@ -21,8 +21,6 @@ ReactDOM.render(
         <Helmet>
             <meta charSet="utf-8"/>
             <title>Stacje pomiarowe AGH</title>
-
-
         </Helmet>
         <App/>
     </Provider>,

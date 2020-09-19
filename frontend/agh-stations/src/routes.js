@@ -15,7 +15,6 @@ const BaseRouter = (props) => (
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/users' component={Users} />
-        <Route exact path='/users/:userID' component={Signup} />
     </div>
 )
 
