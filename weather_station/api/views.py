@@ -2,12 +2,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from weather_station.api.permissions import IsAdminOrReadOnly
+from weather_station.api.permissions import IsAdminOrReadOnly, isStationAdminOrReadOnly
 from weather_station.api.serializers import *
 from weather_station.common.process_measurement import parse_send_request
 
@@ -24,6 +23,8 @@ class StationViewSet(ModelViewSet):
 
 
 class MeasurementViewSet(ModelViewSet):
+    permission_classes = [isStationAdminOrReadOnly]
+
     queryset = Measurement.objects.all().order_by('-time_of_measurement')
     serializer_class = MeasurementSerializer
 
@@ -68,7 +69,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 
 class SendView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [isStationAdminOrReadOnly]
 
     def post(self, request):
         return parse_send_request(request)

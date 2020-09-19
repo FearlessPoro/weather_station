@@ -46,7 +46,7 @@ class StationView extends Component {
     render() {
         const jsonData = {
             "time_of_measurement": "2020-09-16 00:39:01",
-            "station_id": 8,
+            "station": 8,
             "measurement_data": [
                 {
                     "name": "PM 10",
