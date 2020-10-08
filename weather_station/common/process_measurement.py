@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 from django.forms import model_to_dict
 from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
-from rest_framework.authtoken.models import Token
 
 from weather_station.api.models import *
 
@@ -17,9 +16,6 @@ def parse_send_request(request):
                                       '%Y-%m-%d %H:%M:%S')
         if not (timestamp < datetime.now() - timedelta(days=time_delta)):
             if body_data["measurement_data"]:
-                # user = Token.objects.filter(key=request.META['HTTP_AUTHORIZATION'][6:]).model.user
-                # valid_stations = StationUser.objects.get(user=user)
-                # if check_admin_privileges(body_data, valid_stations):
                 measurements_model = Measurement(
                     station=Station.objects.get(id=body_data["station"]),
                     longitude=body_data["longitude"],
@@ -41,9 +37,3 @@ def parse_send_request(request):
         return HttpResponseBadRequest("Bad request")
     return HttpResponse(status=500)
 
-
-# def check_admin_privileges(body_data, valid_stations):
-#     for stationUser in valid_stations:
-#         if stationUser["station"] == Station.objects.get(id=body_data["station_id"]).url:
-#             return True
-#     return False

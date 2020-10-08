@@ -2,7 +2,6 @@ export const BASE_URL = "http://localhost:8000/"
 export const API_URL = BASE_URL + "api/";
 export const STATIONS_API = API_URL + "stations/"
 export const MEASUREMENTS_API = API_URL + "measurements/"
-export const MEASUREMENTS_LOCATION_API = API_URL + "measurementsLocation/"
 export const MEASUREMENTS_DATA_API = API_URL + "measurementData/"
 export const USERS_API = API_URL + "users/"
 export const STATION_USER_API = API_URL + "stationUser/"
