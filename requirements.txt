@@ -9,7 +9,7 @@ django-cors-headers==3.4.0
 django-expiring-token==1.0.2
 django-filter==2.3.0
 django-rest-auth==0.9.5
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 functions==0.7.0
 idna==2.10
 oauthlib==3.1.0
